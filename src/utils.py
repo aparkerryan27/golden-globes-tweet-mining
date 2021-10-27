@@ -3,7 +3,7 @@ import string
 import unidecode
 
 
-def normalize_text(text: str) -> list:
+def normalize_text(text: str) -> str:
     # remove extra whitespace
     res = re.sub(' +', ' ', text)
 
@@ -17,4 +17,4 @@ def normalize_text(text: str) -> list:
     # make lowercase
     res = res.lower()
 
-    return res.split(' ')
+    return res
