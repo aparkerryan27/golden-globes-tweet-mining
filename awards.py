@@ -1,4 +1,3 @@
-import json
 from queue import PriorityQueue
 from utils import normalize_text
 
