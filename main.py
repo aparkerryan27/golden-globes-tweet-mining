@@ -1,5 +1,5 @@
 import json
-from awards import get_awards
+from src.awards import get_awards
 
 
 def main():

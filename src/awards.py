@@ -1,5 +1,5 @@
 from queue import PriorityQueue
-from utils import normalize_text
+from .utils import normalize_text
 
 
 def __get_award(awards: dict, text: list):
@@ -36,10 +36,10 @@ def __is_valid_award(award: str) -> bool:
     blacklist = ['a', 'am', 'an', 'in', 'it', 'or', 'rt', 'to', 'and', 'the', 'for', 'best', 'than', 'then', 'today', 'tonight', 'motion', 'original', 'golden', 'globe', 'globes', 'goldenglobe', 'goldenglobes']
     return award_words[-1] not in blacklist
 
-def get_awards(data=dict, n: int=10) -> list:
+def get_awards(data: dict, n: int=10) -> list:
     """
-        data (dict): dictionary of tweets
-        n (int): number of awards to return
+        data: dictionary of tweets
+        n: number of awards to return
     """
     awards = []
 
