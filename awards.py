@@ -23,7 +23,7 @@ def __get_award_name(award_names: dict, text: list):
                 award_name = ' '.join(text[j:i])
                 award_names[award_name] = award_names.get(award_name, 0) + 1
 
-def __get_possible_award_names():
+def __get_possible_award_names() -> dict:
     award_names = {}
 
     for tweet in data:
@@ -40,7 +40,7 @@ def __is_valid_award_name(award_name: str) -> bool:
     blacklist = ['a', 'am', 'an', 'in', 'it', 'or', 'rt', 'to', 'and', 'the', 'for', 'best', 'than', 'then', 'today', 'tonight', 'motion', 'original', 'golden', 'globe', 'globes', 'goldenglobe', 'goldenglobes']
     return award_name_words[-1] not in blacklist
 
-def get_award_names(n=10):
+def get_award_names(n: int=10) -> list:
     award_names = []
 
     possible_award_names = __get_possible_award_names()
