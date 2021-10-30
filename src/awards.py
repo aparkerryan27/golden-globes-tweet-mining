@@ -37,7 +37,7 @@ def __is_valid_award(award: str) -> bool:
     blacklist = ['a', 'am', 'an', 'in', 'it', 'or', 'rt', 'to', 'tv', 'and', 'the', 'for', 'best', 'than', 'then', 'today', 'tonight', 'motion', 'original', 'golden', 'globe', 'globes', 'goldenglobe', 'goldenglobes']
     return award_words[-1] not in blacklist
 
-def get_awards(data: dict, n: int=10) -> list:
+def get_awards_api(data: dict, n: int=10) -> list:
     """
         data: dictionary of tweets
         n: number of awards to return

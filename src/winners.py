@@ -1,4 +1,4 @@
-from .awards import get_awards
+from .awards import get_awards_api
 from .utils import normalize_text
 
 
@@ -37,14 +37,14 @@ def __is_valid_winner(winner: str) -> bool:
     blacklist = ['golden', 'globe', 'globes', 'goldenglobe', 'goldenglobes']
     return winner_words[-1] not in blacklist
 
-def get_winners(data: dict, n: int=10) -> dict:
+def get_winners_api(data: dict, n: int=10) -> dict:
     """
         data: dictionary of tweets
         n: number of awards to return
     """
     winners = {}
 
-    awards = get_awards(data=data, n=n)
+    awards = get_awards_api(data=data, n=n)
 
     for award in awards:
         potential_winners = __get_potential_winners(data, award)

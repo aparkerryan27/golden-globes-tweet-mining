@@ -1,17 +1,16 @@
 import json
-import src.awards
-import src.winners
+from src.awards import get_awards_api
+from src.winners import get_winners_api
 
-
-OFFICIAL_AWARDS_1315 = ['cecil b. demille award', 'best motion picture - drama', 'best performance by an actress in a motion picture - drama', 'best performance by an actor in a motion picture - drama', 'best motion picture - comedy or musical', 'best performance by an actress in a motion picture - comedy or musical', 'best performance by an actor in a motion picture - comedy or musical', 'best animated feature film', 'best foreign language film', 'best performance by an actress in a supporting role in a motion picture', 'best performance by an actor in a supporting role in a motion picture', 'best director - motion picture', 'best screenplay - motion picture', 'best original score - motion picture', 'best original song - motion picture', 'best television series - drama', 'best performance by an actress in a television series - drama', 'best performance by an actor in a television series - drama', 'best television series - comedy or musical', 'best performance by an actress in a television series - comedy or musical', 'best performance by an actor in a television series - comedy or musical', 'best mini-series or motion picture made for television', 'best performance by an actress in a mini-series or motion picture made for television', 'best performance by an actor in a mini-series or motion picture made for television', 'best performance by an actress in a supporting role in a series, mini-series or motion picture made for television', 'best performance by an actor in a supporting role in a series, mini-series or motion picture made for television']
-OFFICIAL_AWARDS_1819 = ['best motion picture - drama', 'best motion picture - musical or comedy', 'best performance by an actress in a motion picture - drama', 'best performance by an actor in a motion picture - drama', 'best performance by an actress in a motion picture - musical or comedy', 'best performance by an actor in a motion picture - musical or comedy', 'best performance by an actress in a supporting role in any motion picture', 'best performance by an actor in a supporting role in any motion picture', 'best director - motion picture', 'best screenplay - motion picture', 'best motion picture - animated', 'best motion picture - foreign language', 'best original score - motion picture', 'best original song - motion picture', 'best television series - drama', 'best television series - musical or comedy', 'best television limited series or motion picture made for television', 'best performance by an actress in a limited series or a motion picture made for television', 'best performance by an actor in a limited series or a motion picture made for television', 'best performance by an actress in a television series - drama', 'best performance by an actor in a television series - drama', 'best performance by an actress in a television series - musical or comedy', 'best performance by an actor in a television series - musical or comedy', 'best performance by an actress in a supporting role in a series, limited series or motion picture made for television', 'best performance by an actor in a supporting role in a series, limited series or motion picture made for television', 'cecil b. demille award']
 
 def get_hosts(year) -> list:
     '''
     Hosts is a list of one or more strings. Do NOT change the name
     of this function or what it returns.
     '''
-    hosts = []
+    with open(f'data/gg{year}.json', 'r') as f:
+        data = json.load(f)
+        hosts = []
     return hosts
 
 def get_awards(year) -> list:
@@ -21,7 +20,7 @@ def get_awards(year) -> list:
     '''
     with open(f'data/gg{year}.json', 'r') as f:
         data = json.load(f)
-        awards = src.awards.get_awards(data=data)
+        awards = get_awards_api(data=data)
     return awards
 
 def get_nominees(year) -> dict:
@@ -30,7 +29,9 @@ def get_nominees(year) -> dict:
     names as keys, and each entry a list of strings. Do NOT change
     the name of this function or what it returns.
     '''
-    nominees = {}
+    with open(f'data/gg{year}.json', 'r') as f:
+        data = json.load(f)
+        nominees = {}
     return nominees
 
 def get_winner(year) -> dict:
@@ -41,7 +42,7 @@ def get_winner(year) -> dict:
     '''
     with open(f'data/gg{year}.json', 'r') as f:
         data = json.load(f)
-        winners = src.winners.get_winners(data=data)
+        winners = get_winners_api(data=data)
     return winners
 
 def get_presenters(year) -> dict:
@@ -50,7 +51,9 @@ def get_presenters(year) -> dict:
     names as keys, and each entry a list of strings. Do NOT change the
     name of this function or what it returns.
     '''
-    presenters = {}
+    with open(f'data/gg{year}.json', 'r') as f:
+        data = json.load(f)
+        presenters = {}
     return presenters
 
 def pre_ceremony():
@@ -64,11 +67,13 @@ def pre_ceremony():
     return
 
 def main():
-    '''This function calls your program. Typing "python gg_api.py"
+    '''
+    This function calls your program. Typing "python gg_api.py"
     will run this function. Or, in the interpreter, import gg_api
     and then run gg_api.main(). This is the second thing the TA will
     run when grading. Do NOT change the name of this function or
-    what it returns.'''
+    what it returns.
+    '''
     return
 
 if __name__ == '__main__':
