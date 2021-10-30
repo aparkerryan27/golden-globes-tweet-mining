@@ -39,8 +39,9 @@ def __is_valid_winner(winner: str) -> bool:
 
 def get_winners_api(data: dict, n: int=10) -> dict:
     """
-        data: dictionary of tweets
-        n: number of awards to return
+    Keyword arguments:
+    data -- dictionary of tweets
+    n -- number of awards to return (default 10)
     """
     winners = {}
 

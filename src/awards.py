@@ -39,8 +39,9 @@ def __is_valid_award(award: str) -> bool:
 
 def get_awards_api(data: dict, n: int=10) -> list:
     """
-        data: dictionary of tweets
-        n: number of awards to return
+    Keyword arguments:
+    data -- dictionary of tweets
+    n -- number of awards to return (default 10)
     """
     awards = []
 
