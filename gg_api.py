@@ -1,5 +1,7 @@
 import json
 from src.awards import get_awards_api
+from src.hosts import get_hosts_api
+from src.presenters import get_presenters_api
 from src.winners import get_winners_api
 
 
@@ -12,7 +14,7 @@ def get_hosts(year) -> list:
     """
     with open(f'data/gg{year}.json', 'r') as f:
         data = json.load(f)
-        hosts = []
+        hosts = get_hosts_api(data=data)
     return hosts
 
 def get_awards(year) -> list:
@@ -51,7 +53,7 @@ def get_presenters(year) -> dict:
     """
     with open(f'data/gg{year}.json', 'r') as f:
         data = json.load(f)
-        presenters = {}
+        presenters = get_presenters_api(data=data)
     return presenters
 
 def pre_ceremony():
@@ -60,7 +62,6 @@ def pre_ceremony():
     will use, and stores that data in your DB or in a json, csv, or
     plain text file. It is the first thing the TA will run when grading.
     """
-    print("Pre-ceremony processing complete.")
     return
 
 def main():

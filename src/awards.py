@@ -34,7 +34,7 @@ def __is_valid_award(award: str) -> bool:
     award_words = award.split(' ')
     if len(award) <= 1: return False
     if award_words[0] != 'best': return False # awards should start with the word 'best'
-    blacklist = ['a', 'am', 'an', 'in', 'it', 'or', 'rt', 'to', 'tv', 'and', 'the', 'for', 'best', 'than', 'then', 'today', 'tonight', 'motion', 'original', 'golden', 'globe', 'globes', 'goldenglobe', 'goldenglobes']
+    blacklist = ['a', 'am', 'an', 'in', 'it', 'or', 'rt', 'to', 'tv', 'and', 'are', 'the', 'for', 'best', 'next', 'year', 'years', 'host', 'hosts', 'than', 'then', 'today', 'tonight', 'motion', 'original', 'golden', 'globe', 'globes', 'goldenglobe', 'goldenglobes']
     return award_words[-1] not in blacklist
 
 def get_awards_api(data: dict, n: int=10) -> list:
