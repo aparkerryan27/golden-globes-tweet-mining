@@ -3,6 +3,7 @@ from src.awards import get_awards_api
 from src.hosts import get_hosts_api
 from src.presenters import get_presenters_api
 from src.winners import get_winners_api
+from src.nominees import get_nominees_api
 
 
 # IMPORTANT: DO NOT CHANGE ANY OF THE FUNCTION NAMES OR
@@ -21,6 +22,7 @@ def get_awards(year) -> list:
     """
     Awards is a list of strings.
     """
+    print("hello!")
     with open(f'data/gg{year}.json', 'r') as f:
         data = json.load(f)
         awards = get_awards_api(data=data)
@@ -33,7 +35,7 @@ def get_nominees(year) -> dict:
     """
     with open(f'data/gg{year}.json', 'r') as f:
         data = json.load(f)
-        nominees = {}
+        nominees = get_nominees_api(data=data)
     return nominees
 
 def get_winner(year) -> dict:
@@ -71,6 +73,10 @@ def main():
     and then run gg_api.main(). This is the second thing the TA will
     run when grading.
     """
+    print("Testing all functions")
+    year = 2013
+    print(get_nominees(2013))
+
     return
 
 if __name__ == '__main__':

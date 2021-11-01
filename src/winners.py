@@ -37,11 +37,11 @@ def __is_valid_winner(winner: str) -> bool:
     blacklist = ['golden', 'globe', 'globes', 'goldenglobe', 'goldenglobes']
     return winner_words[-1] not in blacklist
 
-def get_winners_api(data: dict, n: int=10) -> dict:
+def get_winners_api(data: dict, n: int=30) -> dict:
     """
     Keyword arguments:
     data -- dictionary of tweets
-    n -- number of awards to return (default 10)
+    n -- number of awards to return (default 30)
     """
     winners = {}
 

@@ -51,11 +51,11 @@ def __is_valid_presenter(presenter: str) -> bool:
     blacklist = ['a', 'am', 'an', 'as', 'any', 'be', 'can', 'in', 'it', 'of', 'on', 'or', 'my', 'no', 'not', 'rt', 'to', 'tv', 'he', 'she', 'him', 'his', 'her', 'and', 'are', 'the', 'this', 'that', 'there', 'their', 'they', 'show', 'for', 'from', 'your', 'yours', 'will', 'was', 'were', 'best', 'next', 'year', 'years', 'host', 'hosts', 'than', 'then', 'what', 'when', 'why', 'how', 'award', 'awards', 'ever', 'every', 'everything', 'today', 'tonight', 'motion', 'original', 'person', 'people', 'golden', 'globe', 'globes', 'goldenglobe', 'goldenglobes']
     return presenter_words[0] not in blacklist and presenter_words[-1] not in blacklist
 
-def get_presenters_api(data: dict, n: int=10) -> dict:
+def get_presenters_api(data: dict, n: int=30) -> dict:
     """
     Keyword arguments:
     data -- dictionary of tweets
-    n -- number of presenters to return (default 10)
+    n -- number of presenters to return (default 30)
     """
     presenters = {}
 

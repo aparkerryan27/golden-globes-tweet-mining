@@ -56,7 +56,7 @@ def get_hosts_api(data: dict) -> list:
             max_heap.put(-freq)
         freqs[freq].append(host)
 
-    while not max_heap.empty() and len(hosts) < 2:
+    while not max_heap.empty() and len(hosts) < 2: #TODO: will always get two hosts! problem?
         top = -max_heap.get()
         for host in freqs[top]:
             if __is_valid_host(host):

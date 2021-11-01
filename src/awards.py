@@ -1,5 +1,6 @@
 from queue import PriorityQueue
 from .utils import normalize_text
+import textdistance
 
 
 def __get_award(awards: dict, normalized_text: str):
@@ -32,16 +33,20 @@ def __get_possible_awards(data: dict) -> dict:
 
 def __is_valid_award(award: str) -> bool:
     award_words = award.split(' ')
-    if len(award) <= 1: return False
+    if len(award_words) <= 2: return False
     if award_words[0] != 'best': return False # awards should start with the word 'best'
-    blacklist = ['a', 'am', 'an', 'in', 'it', 'or', 'rt', 'to', 'tv', 'and', 'are', 'the', 'for', 'best', 'next', 'year', 'years', 'host', 'hosts', 'than', 'then', 'today', 'tonight', 'motion', 'original', 'golden', 'globe', 'globes', 'goldenglobe', 'goldenglobes']
-    return award_words[-1] not in blacklist
+    blacklist = ['a', 'at', 'am', 'an', 'in', 'it', 'or', 'rt', 'to', 'tv', 'and', 'are', 'the', 'for', 'best', 'next', 'year', 'years', 'host', 'hosts', 'than', 'then', 'today', 'tonight', 'motion', 'original', 'golden', 'globe', 'globes', 'goldenglobe', 'goldenglobes', 'congrats', 'cast']
+    ultimate_blacklist = ["for", "golden", "goldenglobes", "congrats", "congratulations", "cast", "crew"]
+    for item in ultimate_blacklist:
+        if item in award_words:
+            return False
+    return award_words[-1] not in blacklist 
 
-def get_awards_api(data: dict, n: int=10) -> list:
+def get_awards_api(data: dict, n: int=30) -> list: 
     """
     Keyword arguments:
     data -- dictionary of tweets
-    n -- number of awards to return (default 10)
+    n -- number of awards to return (default 30)
     """
     awards = []
 
@@ -59,6 +64,14 @@ def get_awards_api(data: dict, n: int=10) -> list:
         top = -max_heap.get()
         for award in freqs[top]:
             if __is_valid_award(award):
-                awards.append(award)
+                if len(awards) > 0:
+                    for item in awards:
+                        if item in award or award in item or textdistance.jaccard(award, item) > 0.87: #if award substring matches or words are just switched around
+                            break
+                    else: 
+                        awards.append(award)  
+                else:
+                    awards.append(award)
+                
 
     return awards

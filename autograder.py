@@ -171,12 +171,14 @@ def score_structured(year, answers, info_type):
     results = getattr(gg_api, 'get_%s' % info_type)(year)
     length = 26
 
+    """
     if info_type == "nominees":
         tempans = answers['award_data']['cecil b. demille award']
         del answers['award_data']['cecil b. demille award']
         tempres = results['cecil b. demille award']
         del results['cecil b. demille award']
         length = 25
+    """
 
     for a in answers['award_data']:
         if info_type == 'winner':
@@ -186,10 +188,12 @@ def score_structured(year, answers, info_type):
             c_score += calc_score([translation[res] if res in translation else res for res in results[a]], answers['award_data'][a][info_type])
         spelling_score += temp_spelling
 
+    """
     if info_type == "nominees":
         answers['award_data']['cecil b. demille award'] = tempans
         results['cecil b. demille award'] = tempres
-
+    """
+    
     return spelling_score/length, c_score/length
 
 
