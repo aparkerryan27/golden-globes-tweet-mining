@@ -22,7 +22,6 @@ def get_awards(year) -> list:
     """
     Awards is a list of strings.
     """
-    print("hello!")
     with open(f'data/gg{year}.json', 'r') as f:
         data = json.load(f)
         awards = get_awards_api(data=data)
