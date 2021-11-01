@@ -32,9 +32,14 @@ def get_nominees(year) -> dict:
     Nominees is a dictionary with the hard coded award
     names as keys, and each entry a list of strings.
     """
+    with open('gg%sanswers.json' % year, 'r') as f:
+        answers = json.load(f)
+
+    answers['awards'] = list(answers['award_data'].keys())
+
     with open(f'data/gg{year}.json', 'r') as f:
         data = json.load(f)
-        nominees = get_nominees_api(data=data)
+        nominees = get_nominees_api(data=data,awards=answers['awards'])
     return nominees
 
 def get_winner(year) -> dict:
@@ -42,9 +47,14 @@ def get_winner(year) -> dict:
     Winners is a dictionary with the hard coded award
     names as keys, and each entry containing a single string.
     """
+    with open('gg%sanswers.json' % year, 'r') as f:
+        answers = json.load(f)
+
+    answers['awards'] = list(answers['award_data'].keys())
+
     with open(f'data/gg{year}.json', 'r') as f:
         data = json.load(f)
-        winners = get_winners_api(data=data)
+        winners = get_winners_api(data=data,awards=answers['awards'])
     return winners
 
 def get_presenters(year) -> dict:
@@ -52,9 +62,14 @@ def get_presenters(year) -> dict:
     Presenters is a dictionary with the hard coded award
     names as keys, and each entry a list of strings.
     """
+    with open('gg%sanswers.json' % year, 'r') as f:
+        answers = json.load(f)
+
+    answers['awards'] = list(answers['award_data'].keys())
+
     with open(f'data/gg{year}.json', 'r') as f:
         data = json.load(f)
-        presenters = get_presenters_api(data=data)
+        presenters = get_presenters_api(data=data,awards=answers['awards'])
     return presenters
 
 def pre_ceremony():
@@ -73,8 +88,14 @@ def main():
     run when grading.
     """
     print("Testing all functions")
-    year = 2013
-    #print(get_nominees(2013))
+    year = '2013'
+    with open('gg%sanswers.json' % year, 'r') as f:
+        answers = json.load(f)
+
+    answers['awards'] = list(answers['award_data'].keys())
+    print(answers['awards'])
+    print(get_awards(2013))
+
 
     return
 

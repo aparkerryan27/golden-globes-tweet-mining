@@ -51,7 +51,7 @@ def __is_valid_presenter(presenter: str) -> bool:
     blacklist = ['a', 'am', 'an', 'as', 'any', 'be', 'can', 'in', 'it', 'of', 'on', 'or', 'my', 'no', 'not', 'rt', 'to', 'tv', 'he', 'she', 'him', 'his', 'her', 'and', 'are', 'the', 'this', 'that', 'there', 'their', 'they', 'show', 'for', 'from', 'your', 'yours', 'will', 'was', 'were', 'best', 'next', 'year', 'years', 'host', 'hosts', 'than', 'then', 'what', 'when', 'why', 'how', 'award', 'awards', 'ever', 'every', 'everything', 'today', 'tonight', 'motion', 'original', 'person', 'people', 'golden', 'globe', 'globes', 'goldenglobe', 'goldenglobes']
     return presenter_words[0] not in blacklist and presenter_words[-1] not in blacklist
 
-def get_presenters_api(data: dict, n: int=30) -> dict:
+def get_presenters_api(data: dict, awards=None, n: int=30) -> dict:
     """
     Keyword arguments:
     data -- dictionary of tweets
@@ -59,7 +59,7 @@ def get_presenters_api(data: dict, n: int=30) -> dict:
     """
     presenters = {}
 
-    awards = get_awards_api(data=data, n=n)
+    if awards is None: awards = get_awards_api(data=data, n=n)
 
     for award in awards:
         potential_presenters = __get_potential_presenters(data, award)

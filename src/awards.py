@@ -40,14 +40,15 @@ def __is_valid_award(award: str) -> bool:
     for item in ultimate_blacklist:
         if item in award_words:
             return False
-    return award_words[-1] not in blacklist 
+    return award_words[-1] not in blacklist
 
-def get_awards_api(data: dict, n: int=30) -> list: 
+def get_awards_api(data: dict, n: int=30) -> list:
     """
     Keyword arguments:
     data -- dictionary of tweets
     n -- number of awards to return (default 30)
     """
+
     awards = []
 
     possible_awards = __get_possible_awards(data)
@@ -68,10 +69,10 @@ def get_awards_api(data: dict, n: int=30) -> list:
                     for item in awards:
                         if item in award or award in item or textdistance.jaccard(award, item) > 0.87: #if award substring matches or words are just switched around
                             break
-                    else: 
-                        awards.append(award)  
+                    else:
+                        awards.append(award)
                 else:
                     awards.append(award)
-                
+
 
     return awards

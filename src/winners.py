@@ -37,7 +37,7 @@ def __is_valid_winner(winner: str) -> bool:
     blacklist = ['a', 'am', 'an', 'as', 'any', 'be', 'can', 'in', 'it', 'of', 'on', 'or', 'my', 'no', 'not', 'rt', 'to', 'tv', 'he', 'she', 'him', 'his', 'her', 'and', 'are', 'the', 'this', 'that', 'there', 'their', 'they', 'show', 'for', 'from', 'your', 'yours', 'will', 'was', 'were', 'best', 'next', 'year', 'years', 'host', 'hosts', 'than', 'then', 'what', 'when', 'why', 'how', 'award', 'awards', 'ever', 'every', 'everything', 'today', 'tonight', 'motion', 'original', 'person', 'people', 'golden', 'globe', 'globes', 'goldenglobe', 'goldenglobes']
     return winner_words[0] not in blacklist and winner_words[-1] not in blacklist
 
-def get_winners_api(data: dict, n: int=30) -> dict:
+def get_winners_api(data: dict, awards=None, n: int=30) -> dict:
     """
     Keyword arguments:
     data -- dictionary of tweets
@@ -45,7 +45,7 @@ def get_winners_api(data: dict, n: int=30) -> dict:
     """
     winners = {}
 
-    awards = get_awards_api(data=data, n=n)
+    if awards is None: awards = get_awards_api(data=data, n=n)
 
     for award in awards:
         potential_winners = __get_potential_winners(data, award)
