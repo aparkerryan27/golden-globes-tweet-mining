@@ -44,24 +44,13 @@ def get_nominees_api(data: dict, n: int=30) -> dict:
     for award in awards:
         potential_nominees = __get_potential_nominees(data, award)
 
-        #TODO: way to select the right number of nominees for each category, maybe a ratio of highest frequencies or a spread size
+        valid_noms = {}
+        for nom, freq in potential_nominees.items():
+            if __is_valid_nominee(nom):
+                valid_noms[nom] = freq
+        valid_noms = sorted(valid_noms.items(), key=lambda x: x[1], reverse=False)
         
-        nominees = []
-        lowest_freq = 0
-        lowest_nominee = ''
-        potential_nominees = [nom for nom in potential_nominees if __is_valid_nominee(nom)]
-        for potential_nominee, freq in potential_nominees.items():
-            if __is_valid_nominee(potential_nominees):
-                if len(potential_nominees) < 5:
-                    nominees.append(potential_nominee)
-                    lowest_freq = freq
-                    lowest_nominee = potential_nominee
-                elif freq > lowest_freq:
-                    lowest_freq = freq
-                    nominees.replace()
-                    lowest_nominee = potential_nominee
-        nominees.sort
-        all_nominees[award] = nominees
+        all_nominees[award] = valid_noms[:5]
         
 
     return all_nominees
