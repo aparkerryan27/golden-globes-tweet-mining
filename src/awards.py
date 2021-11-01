@@ -6,7 +6,7 @@ import textdistance
 def __get_award(awards: dict, normalized_text: str):
     words = normalized_text.split(' ')
     for i, word in enumerate(words):
-        if word == 'wins':
+        if word == 'wins' or word == 'earns' or word == 'won' or word == 'recieves' or word == 'awarded' or word == 'named':
             for j in range(i+2, len(words)+1):
                 award = ' '.join(words[i+1:j])
                 awards[award] = awards.get(award, 0) + 1
@@ -25,18 +25,16 @@ def __get_possible_awards(data: dict) -> dict:
     awards = {}
 
     for tweet in data:
-        text = tweet['text']
-        normalized_text = normalize_text(text)
-        __get_award(awards, normalized_text)
+        __get_award(awards, normalize_text(tweet['text']))
 
     return awards
 
 def __is_valid_award(award: str) -> bool:
     award_words = award.split(' ')
-    if len(award_words) <= 2: return False
-    if award_words[0] != 'best': return False # awards should start with the word 'best'
-    blacklist = ['a', 'at', 'am', 'an', 'in', 'it', 'or', 'rt', 'to', 'tv', 'and', 'are', 'the', 'for', 'best', 'next', 'year', 'years', 'host', 'hosts', 'than', 'then', 'today', 'tonight', 'motion', 'original', 'golden', 'globe', 'globes', 'goldenglobe', 'goldenglobes', 'congrats', 'cast']
-    ultimate_blacklist = ["for", "golden", "goldenglobes", "congrats", "congratulations", "cast", "crew"]
+    if len(award_words) <= 3: return False
+    if "award" not in award_words and award_words[0] != 'best': return False # awards should start with the word 'best' except for the awards
+    blacklist = ['a', 'at', 'am', 'an', 'in', 'it', 'or', 'to', 'tv', 'and', 'are', 'the', 'for', 'best', 'next', 'year', 'years', 'host', 'hosts', 'than', 'then', 'today', 'tonight', 'motion', 'original', 'globe', 'globes', 'goldenglobe']
+    ultimate_blacklist = ["for", "golden", "goldenglobes", "congrats", "congratulations", "cast", "crew", "rt"]
     for item in ultimate_blacklist:
         if item in award_words:
             return False

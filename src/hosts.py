@@ -1,12 +1,14 @@
 from queue import PriorityQueue
+import time
 from .utils import normalize_text
 
 def __get_host(hosts: dict, normalized_text: str):
     words = normalized_text.split(' ')
-    if 'should' in words: return
+    if 'should' in words: return #eliminate future or previous hosts
     if 'wish' in words: return
     if 'hope' in words: return
     if 'next' in words: return
+    if 'pre' in words: return #eliminate pre-show host (attempts to remove Natalie Morales but doesn't work)
     for i, word in enumerate(words):
         if word == 'host':
             for j in range(i):
@@ -25,12 +27,12 @@ def __get_host(hosts: dict, normalized_text: str):
 
 def __get_potential_hosts(data: dict) -> dict:
     potential_hosts = {}
-
+    #starttime = time.time()
     for tweet in data:
-        text = tweet['text']
-        normalized_text = normalize_text(text)
-        __get_host(potential_hosts, normalized_text)
+        __get_host(potential_hosts, normalize_text(tweet['text']))
 
+        
+    #print('That took {} seconds'.format(time.time() - starttime))
     return potential_hosts
 
 def __is_valid_host(host: str) -> bool:
@@ -56,7 +58,7 @@ def get_hosts_api(data: dict) -> list:
             max_heap.put(-freq)
         freqs[freq].append(host)
 
-    while not max_heap.empty() and len(hosts) < 2: #TODO: will always get two hosts! problem?
+    while not max_heap.empty() and len(hosts) < 2: #TODO: will always get two hosts! don't know how to solve that for exception years
         top = -max_heap.get()
         for host in freqs[top]:
             if __is_valid_host(host):

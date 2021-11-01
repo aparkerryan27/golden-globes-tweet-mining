@@ -1,3 +1,4 @@
+import textdistance
 from .awards import get_awards_api
 from .utils import normalize_text
 
@@ -5,15 +6,11 @@ from .utils import normalize_text
 def __get_winner(winners: dict, normalized_text: str):
     words = normalized_text.split(' ')
     for i, word in enumerate(words):
-        if word == 'wins':
+        if word == 'wins' or word == 'earns' or word == 'won' or word == 'recieves' or word == 'named':
             for j in range(i):
                 winner = ' '.join(words[j:i])
                 winners[winner] = winners.get(winner, 0) + 1
-        elif word == 'won':
-            for j in range(i):
-                winner = ' '.join(words[j:i])
-                winners[winner] = winners.get(winner, 0) + 1
-        elif word == 'goes':
+        elif word == 'goes' or word == 'awarded':
             if i == len(words)-1 or words[i+1] != 'to':
                 continue
             for j in range(i+3, len(words)+1):
@@ -22,11 +19,13 @@ def __get_winner(winners: dict, normalized_text: str):
 
 def __get_potential_winners(data: dict, award: str) -> dict:
     potential_winners = {}
-
+    
     for tweet in data:
-        text = tweet['text']
-        normalized_text = normalize_text(text)
-        if award in normalized_text:
+        normalized_text = normalize_text(tweet['text'])
+        award_words = award.replace("- ", "").split(" ")
+
+        if all([word in normalized_text for word in award_words]):
+            print(normalized_text)
             __get_winner(potential_winners, normalized_text)
 
     return potential_winners
@@ -46,8 +45,15 @@ def get_winners_api(data: dict, awards=None, n: int=30) -> dict:
     winners = {}
 
     if awards is None: awards = get_awards_api(data=data, n=n)
+    print(awards)
+
+
+    #TODO: organize awards by length so that the substring awards dont catch names first
+
+
 
     for award in awards:
+        print("award sent")
         potential_winners = __get_potential_winners(data, award)
 
         max_freq = 0
