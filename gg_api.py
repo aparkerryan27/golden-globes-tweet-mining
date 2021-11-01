@@ -74,7 +74,7 @@ def main():
     """
     print("Testing all functions")
     year = 2013
-    print(get_nominees(2013))
+    #print(get_nominees(2013))
 
     return
 
