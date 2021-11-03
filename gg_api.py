@@ -5,6 +5,7 @@ from src.hosts import get_hosts_api
 from src.presenters import get_presenters_api
 from src.winners import get_winners_api
 from src.nominees import get_nominees_api
+from src.sentiment import get_sentiment_api
 
 
 # IMPORTANT: DO NOT CHANGE ANY OF THE FUNCTION NAMES OR
@@ -52,6 +53,7 @@ def get_nominees(year) -> dict:
     return nominees
 
 def get_winner(year) -> dict:
+    #gets about a 20% and takes some time, but this technically works well enough and gets most correct it looks like
     """
     Winners is a dictionary with the hard coded award
     names as keys, and each entry containing a single string.
@@ -80,7 +82,21 @@ def get_presenters(year) -> dict:
     with open(f'data/gg{year}.json', 'r') as f:
         data = json.load(f)
         presenters = get_presenters_api(data=data,awards=answers['awards'])
+        print(presenters)
     return presenters
+
+
+def get_host_sentiment(year) -> list:
+    """
+    Gets the overall feelings on the golden globes and its participants
+    """
+    with open(f'data/gg{year}.json', 'r') as f:
+        data = json.load(f)
+        vibes = get_sentiment_api(data, get_hosts_api(data))
+
+    sentiment =  "good vibes" if vibes else "bad vibes"
+    print(sentiment)
+    return sentiment
 
 def pre_ceremony():
     """
@@ -106,7 +122,7 @@ def main():
     #print(answers['awards'])
 
     starttime = time.time()
-    get_winner(2013)
+    get_host_sentiment(2013)
     print('That took {} seconds'.format(time.time() - starttime))
 
     return
