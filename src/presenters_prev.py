@@ -1,36 +1,36 @@
 from .awards import get_awards_api
 from .utils import normalize_text
-from .utils import find_names
 
-def __get_time(data: dict, award: str) -> int:
-    timestamps = []
+
+def __get_presenter(presenters: dict, normalized_text: str, award: str):
+    words = normalized_text.split(' ')
+    if 'should' in words: return
+    if 'wish' in words: return
+    if 'hope' in words: return
+    for i, word in enumerate(words):
+        if word == 'presents':
+            for j in range(i):
+                presenter = ' '.join(words[j:i])
+                presenters[presenter] = presenters.get(presenter, 0) + 1
+        elif word == 'presenter' or word == 'presenters' or word == 'presenting' or word == 'presented' or word == 'introduced' or word == 'introducing' or word == 'introduces' or word == 'introduce':
+            for j in range(i):
+                presenter = ' '.join(words[j:i])
+                presenters[presenter] = presenters.get(presenter, 0) + 1
+            for j in range(i+1, len(words)+1):
+                presenter = ' '.join(words[i+2:j])
+                presenters[presenter] = presenters.get(presenter, 0) + 1
+            
+
+def __get_potential_presenters(data: dict, award: str) -> dict:
+    potential_presenters = {}
+
     for tweet in data:
         normalized_text = normalize_text(tweet['text'])
         award_normalized = normalize_text(award)
         award_words = award_normalized.split(" ")
 
         if all([word in normalized_text for word in award_words]):
-            timestamps += [tweet['timestamp_ms']]
-
-    if len(timestamps) == 0:
-        print('NO         '+award)
-        return -1
-    else:
-        print('yes ' + award)
-        print(sum(timestamps)/len(timestamps))
-        return sum(timestamps)/len(timestamps)
-
-def __get_potential_presenters(data: dict, award: str,avgtime) -> dict:
-    potential_presenters = {}
-    minus_time = 2*1000*60
-    plus_time = 0*1000*60
-
-    for tweet in data:
-        if (tweet['timestamp_ms'] < avgtime - minus_time) | (tweet['timestamp_ms'] > avgtime + plus_time): continue
-
-        names = find_names(tweet['text'])
-        for name in names:
-            potential_presenters[name] = potential_presenters.get(name, 0) + 1
+            __get_presenter(potential_presenters, normalized_text, award_normalized)
 
     return potential_presenters
 
@@ -55,11 +55,7 @@ def get_presenters_api(data: dict, awards=None, n: int=30) -> dict:
     awards.reverse()
 
     for award in awards:
-        avgtime = __get_time(data,award)
-        if avgtime == -1:
-            presenters[award] = ''
-            continue
-        potential_presenters = __get_potential_presenters(data, award,avgtime)
+        potential_presenters = __get_potential_presenters(data, award)
 
         max_freq = 0
         presenter = ''

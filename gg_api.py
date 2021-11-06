@@ -5,7 +5,7 @@ from src.hosts import get_hosts_api
 from src.presenters import get_presenters_api
 from src.winners import get_winners_api
 from src.nominees import get_nominees_api
-from src.sentiment import get_sentiment_api
+#from src.sentiment import get_sentiment_api
 
 
 # IMPORTANT: DO NOT CHANGE ANY OF THE FUNCTION NAMES OR
@@ -23,7 +23,7 @@ def get_hosts(year) -> list:
         hosts = get_hosts_api(data=data)
         print(hosts)
 
-    
+
     return hosts
 
 def get_awards(year) -> list:
@@ -78,11 +78,16 @@ def get_presenters(year) -> dict:
         answers = json.load(f)
 
     answers['awards'] = list(answers['award_data'].keys())
+    count = 0
 
     with open(f'data/gg{year}.json', 'r') as f:
         data = json.load(f)
         presenters = get_presenters_api(data=data,awards=answers['awards'])
         print(presenters)
+        for award in answers['awards']:
+            if presenters[award] == answers['award_data'][award]: count += 1
+        print('SCORE')
+        print(count/len(answers['awards']))
     return presenters
 
 
@@ -122,8 +127,9 @@ def main():
     #print(answers['awards'])
 
     starttime = time.time()
-    get_host_sentiment(2013)
+    presenters = get_presenters(2013)
     print('That took {} seconds'.format(time.time() - starttime))
+
 
     return
 
